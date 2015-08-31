@@ -8,9 +8,8 @@ import QtQuick 2.0
 ApplicationWindow {
     id:root
     visible: true
-    width: 900
-    height:900
-
+    width: 1000
+    height:1000
     menuBar: MenuBar{
         Menu{
             title: "Menu"
@@ -19,7 +18,6 @@ ApplicationWindow {
                 shortcut: "Ctrl+N"
 
             }
-
             MenuItem {
                 text: "Exit"
                 shortcut: "Ctrl+Q"
@@ -29,25 +27,21 @@ ApplicationWindow {
     }
     statusBar: StatusBar{
         RowLayout{
-            anchors.fill: root
-            Label{text: "Score:"}
-            Label{text: "Turns left:"}
+            anchors.fill: parent
+            Label{text: "Score: "+dndGrid.model.score}
+            Label{text: "Turns left: "+ dndGrid.model.steps}
         }
-
     }
-
     Rectangle {
         id:mainRect
         anchors.fill: parent
         color: "lightgreen"
-
-        Component{
+        Component {
             id: dndDelegate
             Item {
                 id: wrapper
                 width: dndGrid.cellWidth
                 height: dndGrid.cellHeight
-
                 Image {
                     id: cellRect
                     anchors.centerIn: parent
@@ -55,38 +49,29 @@ ApplicationWindow {
                     height: dndGrid.cellHeight*0.8
                     source: dndGrid.model.getSource(tileType)
                     opacity: index < (dndGrid.model.getHeight())*(dndGrid.model.getWidth()) ? 1:0
-                    Text {
-                        id: idTile
-                        text: index  + "\n type:" +tileType
-                    }
                     MouseArea {
                         id:rectMouse
                         anchors.fill: parent
                         hoverEnabled: true;
-                        onPressed:
-                        {
-                            dndGrid.model.doMovement(index);
-                            dndGrid.model.matching();
+                        onPressed: {
+                            game(index);
                         }
-
                     }
                 }
             }
         }
-        GridView{
+        GridView {
             id: dndGrid
-            interactive: true
             verticalLayoutDirection: GridView.BottomToTop
-
             anchors.fill: parent
             anchors.margins: 10
+            interactive: false
             cellWidth: (root.width/dndGrid.model.getWidth())-5
             cellHeight: (root.height/dndGrid.model.getHeight())-5
             model:dataModel
             delegate: dndDelegate
             move: Transition {
                 id:myTran
-
                 onRunningChanged: {
                     if (!myTran.running) {
                     }
@@ -105,8 +90,17 @@ ApplicationWindow {
             moveDisplaced: myTran
         }
     }
+    function game(index) {
 
+        var moved  = dndGrid.model.doMovement(index);
+
+        if(dndGrid.model.matching()) {
+            dndGrid.model.setSteps();
+        }
+    }
 }
+
+
 
 
 
