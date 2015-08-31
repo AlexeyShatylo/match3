@@ -10,8 +10,10 @@ QMatchTreeList::QMatchTreeList(int minScore, int maxMoves, int height, int eleme
     QAbstractListModel(parent), m_minScore(minScore),m_maxMoves(maxMoves),
     m_types(types),m_elementScore(elementScore),m_width(width), m_height(height)
 {
+
     create();
     matching();
+    m_totalScore = 0;
 }
 QMatchTreeList::~QMatchTreeList()
 {
@@ -45,48 +47,132 @@ QHash<int, QByteArray> QMatchTreeList::roleNames() const
     roles[tileOpacityRole] = "tileOpacity";
     return roles;
 }
-void QMatchTreeList::doMovement(int index)
+bool QMatchTreeList::doMovement(int index)
 {
+
     bool isProgressMade = false;
     if(doPath(index)){
         if (int(m_path[0]/m_width) == int(m_path[1]/m_width) && !isProgressMade) {
-            if (m_path[0] - m_path[1] == South || m_path[0] - m_path[1] == North){
-                if(m_path[0] - m_path[1] == North){
-                    beginMoveRows(QModelIndex(),m_path[0], m_path[0] ,QModelIndex(),m_path[1]+1);
-                    qSwap(m_list[m_path[0]],m_list[m_path[1]]);
-                    endMoveRows();
-                    isProgressMade = true;
-                }
-                if(m_path[0] - m_path[1] == South && !isProgressMade){
-                    beginMoveRows(QModelIndex(),m_path[0], m_path[0] ,QModelIndex(),m_path[1]);
-                    qSwap(m_list[m_path[0]],m_list[m_path[1]]);
-                    endMoveRows();
-                    isProgressMade = true;
-                }
+            if(m_path[0] - m_path[1] == -1){
+                beginMoveRows(QModelIndex(),m_path[0], m_path[0] ,QModelIndex(),m_path[0]+2);
+                qSwap(m_list[m_path[0]],m_list[m_path[1]]);
+                endMoveRows();
+                isProgressMade = true;
+            }
+            if(m_path[0] - m_path[1] == South && !isProgressMade){
+                beginMoveRows(QModelIndex(),m_path[0], m_path[0] ,QModelIndex(),m_path[0]-1);
+                qSwap(m_list[m_path[0]],m_list[m_path[1]]);
+                endMoveRows();
+                isProgressMade = true;
             }
         }
         else
         {
-            if ((m_path[0]-m_path[1]) ==  - m_width && !isProgressMade){
-                    beginMoveRows(QModelIndex(),m_path[0], m_path[0],QModelIndex(),m_path[1]+1);
-                    qSwap(m_list[m_path[0]],m_list[m_path[1]]);
-                    endMoveRows();
-                    beginMoveRows(QModelIndex(),m_path[1] -1, m_path[1] - 1,QModelIndex(),m_path[0]);
-                    endMoveRows();
-                    isProgressMade = true;
+            if ((m_path[0] - m_path[1]) == - m_width && !isProgressMade){
+                beginMoveRows(QModelIndex(),m_path[0], m_path[0],QModelIndex(),m_path[0]+m_width);
+                endMoveRows();
+                qSwap(m_list[m_path[0]],m_list[m_path[1]]);
+                beginMoveRows(QModelIndex(),m_path[1], m_path[1],QModelIndex(),m_path[1]-m_width);
+                endMoveRows();
+                isProgressMade = true;
             }
             if ((m_path[0] - m_path[1]) ==  m_width && !isProgressMade) {
-                    beginMoveRows(QModelIndex(),m_path[0], m_path[0],QModelIndex(),m_path[1]);
-                    qSwap(m_list[m_path[0]], m_list[m_path[1]]);
-                    endMoveRows();
-                    beginMoveRows(QModelIndex(),m_path[1] + 1, m_path[1] + 1,QModelIndex(),m_path[0] + 1);
-                    endMoveRows();
-                    isProgressMade = true;
+                beginMoveRows(QModelIndex(),m_path[1], m_path[1],QModelIndex(),m_path[1]+m_width);
+                endMoveRows();
+                qSwap(m_list[m_path[0]], m_list[m_path[1]]);
+                beginMoveRows(QModelIndex(),m_path[0], m_path[0],QModelIndex(),m_path[0]-m_width);
+                endMoveRows();
+                isProgressMade = true;
             }
         }
+        qDebug() << "from" << m_path[0]  << "type:" << m_list[m_path[0]]->getType()
+                << "\t" << "to:"  << m_path[1] << "type:"<< m_list[m_path[1]]->getType();
+    }
+    if(isProgressMade){
+
         m_path.clear();
     }
+    return isProgressMade;
 }
+
+
+void QMatchTreeList::fillMatches(int index)
+{
+    int temp = index;
+    if(m_totalMatches.isEmpty())
+    {
+        m_totalMatches.append(temp);
+    }
+    else
+    {
+        for(int i = 0; i < m_totalMatches.size(); i++)
+        {
+            if(temp != m_totalMatches[i])
+            {
+                if(i == m_totalMatches.size()-1)
+                {
+                    m_totalMatches.append(index);
+                }
+            }
+            else if(temp == m_totalMatches[i])
+            {
+                break;
+            }
+        }
+    }
+}
+
+void QMatchTreeList::deleteMatches()
+{
+    if(!m_totalMatches.isEmpty()){
+        std::sort(m_totalMatches.begin(),m_totalMatches.end());
+
+    qDebug () << "Matched vector: " << m_totalMatches;
+    }
+
+    for (int i = m_totalMatches.size()-1; i >= 0; i--) {
+        for (int j = 0; j < m_height; j++) {
+            doMovement(m_totalMatches[i]);
+            doMovement(m_totalMatches[i] + m_width);
+            m_totalMatches[i] += m_width;
+        }
+
+     fillSecondBoard();
+    }
+    setScore(m_totalMatches.size());
+    m_totalMatches.clear();
+}
+
+int QMatchTreeList::getScore() const
+{
+    return m_totalScore;
+}
+void QMatchTreeList::setScore(int machedTiles){
+    m_totalScore += machedTiles*m_elementScore;
+    emit scoreChanged();
+}
+
+bool QMatchTreeList::matching()
+{
+    bool isVerticalMatch = findMatchOnVertical();
+    bool isHorizontalMatch = findMatchOnHorizontal();
+    if (isVerticalMatch || isHorizontalMatch) {
+        deleteMatches();
+        matching();
+    }
+    if (!isVerticalMatch || !isHorizontalMatch)
+    {
+        return false;
+    }
+    else
+    {
+        return true;
+    }
+}
+int QMatchTreeList::getType(int index){
+    return m_list[index]->getType();
+}
+
 bool QMatchTreeList::findMatchOnHorizontal()
 {
     QVector<int>matchedHorizontal;
@@ -116,61 +202,11 @@ bool QMatchTreeList::findMatchOnHorizontal()
     {
         fillMatches(matchedHorizontal[i]);
     }
+    if(!matchedHorizontal.isEmpty()){
+    qDebug () << matchedHorizontal;
+    }
     return !matchedHorizontal.isEmpty();
 }
-void QMatchTreeList::fillMatches(int index)
-{
-    int temp = index;
-    if(m_totalMatches.isEmpty())
-    {
-        m_totalMatches.append(temp);
-    }
-    else
-    {
-        for(int i = 0; i < m_totalMatches.size(); i++)
-        {
-            if(temp != m_totalMatches[i])
-            {
-                if(i == m_totalMatches.size()-1)
-                {
-                    m_totalMatches.append(index);
-                }
-            }
-            else if(temp == m_totalMatches[i])
-            {
-                break;
-            }
-        }
-    }
-}
-
-void QMatchTreeList::deleteMatches()
-{
-    for (int i = 0; i < m_totalMatches.size(); i++) {
-        for (int j = 0; j < m_height; j++) {
-            doMovement(m_totalMatches[i]);
-            doMovement(m_totalMatches[i] + m_width);
-            m_totalMatches[i] += m_width;
-        }
-        fillSecondBoard();
-    }
-    m_totalMatches.clear();
-}
-bool QMatchTreeList::matching()
-{
-    bool isHorizontalMatch = findMatchOnHorizontal();
-    bool isVerticalMatch = findMatchOnVertical();
-    if (isVerticalMatch || isHorizontalMatch) {
-        deleteMatches();
-        matching();
-    }
-    if (!isVerticalMatch || !isHorizontalMatch)
-    {
-        m_totalMatches.clear();
-        return false;
-    }
-}
-
 bool QMatchTreeList::findMatchOnVertical()
 {
     QVector<int>matchedVertical;
@@ -184,13 +220,13 @@ bool QMatchTreeList::findMatchOnVertical()
                 temp.append((i +(j+1)*m_width ));
             }
             else {
-                if (temp.size() >= 3) {
+                if (temp.size() > 2) {
                     matchedVertical.append(temp);
                 }
                 temp.clear();
             }
         }
-        if (temp.size() >= 3) {
+        if (temp.size() > 2) {
             matchedVertical.append(temp);
         }
         temp.clear();
@@ -198,6 +234,9 @@ bool QMatchTreeList::findMatchOnVertical()
     for(int i = 0; i < matchedVertical.size(); i++)
     {
         fillMatches(matchedVertical[i]);
+    }
+    if(!matchedVertical.isEmpty()) {
+    qDebug () << matchedVertical;
     }
     return !matchedVertical.isEmpty();
 }
@@ -227,10 +266,11 @@ bool QMatchTreeList::create ()
     if(!m_tile){
         return false;
     }
+
     for (int i = 0; i < 2 *m_width*m_height; i++){
         m_list.append(&m_tile[i]);
     }
-        matching();
+    matching();
     return true;
 }
 void QMatchTreeList::remove()
@@ -276,14 +316,14 @@ bool QMatchTreeList::doPath(int index)
         if(!m_path.size()){
             m_path.append(index);
         }
-
-        if(m_path[0] != index){
+        if( index == m_path[0] + m_width || index == m_path[0] - m_width || index == m_path[0] + 1 || index == m_path[0] - 1){
             m_path.append(index);
         }
         if(m_path.size() == 2)
         {
             return true;
         }
+        return false;
     }
     else{
         return false;

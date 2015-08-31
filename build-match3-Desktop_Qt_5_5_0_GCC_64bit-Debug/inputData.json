@@ -1,7 +1,7 @@
 {
-	"width": 10,
-	"height": 10,
-	"types": [0, 1, 2,3,4 ],
+	"width": 4,
+	"height": 4,
+	"types": [0, 1, 2, 3, 4 ],
 	"elementScore": 60,
 	"minScore": 10000,
 	"maxMoves": 20

@@ -8,10 +8,12 @@
 #include <QModelIndex>
 #include <QJsonDocument>
 #include "qtile.h"
-
+#include <QTimer>
+#include <iostream>
 enum    coord {North = -1, South = 1, East = +4, West = -4};
 class QMatchTreeList : public QAbstractListModel
 {
+    Q_PROPERTY(int score READ getScore WRITE setScore NOTIFY scoreChanged)
     Q_OBJECT
 public:
     enum cellRoles{tileTypeRole = Qt::UserRole+1, tileOpacityRole = Qt::UserRole+2};
@@ -27,14 +29,13 @@ public:
     Q_INVOKABLE int rowCount(const QModelIndex &parent) const;
     Q_INVOKABLE QString getSource(int type);
     QHash<int, QByteArray> roleNames() const;
-    Q_INVOKABLE void doMovement(int index);
+    Q_INVOKABLE bool doMovement(int index);
 
     void remove();
     void fillRandomly();
     bool create();
     Q_INVOKABLE bool findMatchOnVertical();
     Q_INVOKABLE bool findMatchOnHorizontal();
-    //Q_INVOKABLE void deleteMatches();
     Q_INVOKABLE void fillMatches(int index);
 
     void printMatches();
@@ -44,15 +45,17 @@ public:
     Q_INVOKABLE bool matching();
     void deleteMatches();
 
-
+    int getScore()const;
+    void setScore(int machedTiles);
     bool fillSecondBoard();
+    Q_INVOKABLE int getType(int index);
 private:
     int m_minScore;
     int m_maxMoves;
     int m_elementScore;
     int m_width;
     int m_height;
-
+    int m_totalScore;
     QTile* m_tile;
 
     QVector<QTile*> m_list;
@@ -60,6 +63,9 @@ private:
     QVector<int> m_totalMatches;
     QVector<int> m_path;
 public slots:
+
+signals:
+    void scoreChanged();
 
 };
 

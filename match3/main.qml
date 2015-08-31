@@ -3,36 +3,39 @@ import QtQuick.Window 2.2
 import QtQuick.Controls 1.4
 import QtQuick.Dialogs 1.2
 import QtQml.Models 2.1
+import QtQuick.Layouts 1.0
+import QtQuick 2.0
 ApplicationWindow {
     id:root
     visible: true
-    width: 1000
-    height: 1000
-    MenuBar{
+    width: 900
+    height:900
 
-        Menu {
-            title: ("Menu")
-            MenuSeparator{
-                visible:  true
-            }
-            MenuItem{
-                text: ("New game")
-                shortcut: "Ctrl+n"
-                onTriggered: dndGrid.model.fillRandomly();
-            }
-            MenuItem{
-                text: ("Exit")
-                shortcut: "Ctrl+q"
-                onTriggered: Qt.quit();
-            }
-        }
+    menuBar: MenuBar{
         Menu{
-            title: ("Info")
+            title: "Menu"
             MenuItem {
-                text: ("About")
+                text: "New game"
+                shortcut: "Ctrl+N"
+
+            }
+
+            MenuItem {
+                text: "Exit"
+                shortcut: "Ctrl+Q"
+                onTriggered: Qt.quit()
             }
         }
     }
+    statusBar: StatusBar{
+        RowLayout{
+            anchors.fill: root
+            Label{text: "Score:"}
+            Label{text: "Turns left:"}
+        }
+
+    }
+
     Rectangle {
         id:mainRect
         anchors.fill: parent
@@ -63,7 +66,7 @@ ApplicationWindow {
                         onPressed:
                         {
                             dndGrid.model.doMovement(index);
-                            //dndGrid.model.matching();
+                            dndGrid.model.matching();
                         }
 
                     }
@@ -72,7 +75,7 @@ ApplicationWindow {
         }
         GridView{
             id: dndGrid
-            //interactive: true
+            interactive: true
             verticalLayoutDirection: GridView.BottomToTop
 
             anchors.fill: parent
@@ -86,8 +89,6 @@ ApplicationWindow {
 
                 onRunningChanged: {
                     if (!myTran.running) {
-                        console.log()
-                        dndGrid.model.matching();
                     }
                 }
                 ParallelAnimation {
