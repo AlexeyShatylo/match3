@@ -48,52 +48,17 @@ QHash<int, QByteArray> QMatchTreeList::roleNames() const
 void QMatchTreeList::doMovement(int index)
 {
     bool isProgressMade = false;
-//    if(doPath(index)) {
-//        if (int(m_path[0]/m_width) == int(m_path[1]/m_width) && !isProgressMade) {
-//                if(m_path[0] - m_path[1] == -1){
-//                    beginMoveRows(QModelIndex(),m_path[0], m_path[0] ,QModelIndex(),m_path[1] + 1);
-//                    qSwap(m_list[m_path[0]],m_list[m_path[1]]);
-//                    endMoveRows();
-//                    isProgressMade = true;
-//                }
-//                if(m_path[0] - m_path[1] == 1 && !isProgressMade){
-//                    beginMoveRows(QModelIndex(),m_path[1], m_path[1] ,QModelIndex(),m_path[0]);
-//                    qSwap(m_list[m_path[0]],m_list[m_path[1]]);
-//                    endMoveRows();
-//                    isProgressMade = true;
-//                }
-
-//        }
-//        else
-//        {
-//            if ((m_path[0] - m_path[1] ) ==  - m_width && !isProgressMade){
-//                    beginMoveRows(QModelIndex(),m_path[0], m_path[0],QModelIndex(),m_path[1] + 1);
-//                    qSwap(m_list[m_path[0]],m_list[m_path[1]]);
-//                    endMoveRows();
-//                    beginMoveRows(QModelIndex(),m_path[1] - 1, m_path[1] - 1,QModelIndex(),m_path[1]-m_width);
-//                    endMoveRows();
-//                    isProgressMade = true;
-//            }
-//            if ((m_path[0] - m_path[1]) ==  m_width && !isProgressMade) {
-//                    beginMoveRows(QModelIndex(),m_path[1], m_path[1],QModelIndex(),m_path[0]);
-//                    qSwap(m_list[m_path[0]], m_list[m_path[1]]);
-//                    endMoveRows();
-//                    beginMoveRows(QModelIndex(),m_path[0] + 1, m_path[0] + 1,QModelIndex(),m_path[0] + m_width + 1);
-//                    endMoveRows();
-//                    isProgressMade = true;
-//            }
-//        }
     if(doPath(index)){
         if (int(m_path[0]/m_width) == int(m_path[1]/m_width) && !isProgressMade) {
             if (m_path[0] - m_path[1] == South || m_path[0] - m_path[1] == North){
                 if(m_path[0] - m_path[1] == North){
-                    beginMoveRows(QModelIndex(),m_path[0], m_path[0] ,QModelIndex(),m_path[0]+2);
+                    beginMoveRows(QModelIndex(),m_path[0], m_path[0] ,QModelIndex(),m_path[1]+1);
                     qSwap(m_list[m_path[0]],m_list[m_path[1]]);
                     endMoveRows();
                     isProgressMade = true;
                 }
                 if(m_path[0] - m_path[1] == South && !isProgressMade){
-                    beginMoveRows(QModelIndex(),m_path[0], m_path[0] ,QModelIndex(),m_path[0]-1);
+                    beginMoveRows(QModelIndex(),m_path[0], m_path[0] ,QModelIndex(),m_path[1]);
                     qSwap(m_list[m_path[0]],m_list[m_path[1]]);
                     endMoveRows();
                     isProgressMade = true;
@@ -102,25 +67,21 @@ void QMatchTreeList::doMovement(int index)
         }
         else
         {
-            if (( m_path[1]-m_path[0] ) ==  m_width && m_path[1] <= m_list.size() && m_path[0] < (m_list.size()- m_width) && !isProgressMade){
-                if(isProgressMade == false ) {
-                    beginMoveRows(QModelIndex(),m_path[0], m_path[0],QModelIndex(),m_path[0]+m_width);
-                    endMoveRows();
+            if ((m_path[0]-m_path[1]) ==  - m_width && !isProgressMade){
+                    beginMoveRows(QModelIndex(),m_path[0], m_path[0],QModelIndex(),m_path[1]+1);
                     qSwap(m_list[m_path[0]],m_list[m_path[1]]);
-                    beginMoveRows(QModelIndex(),m_path[1], m_path[1],QModelIndex(),m_path[1]-m_width);
+                    endMoveRows();
+                    beginMoveRows(QModelIndex(),m_path[1] -1, m_path[1] - 1,QModelIndex(),m_path[0]);
                     endMoveRows();
                     isProgressMade = true;
-                }
             }
-            if ((m_path[0] - m_path[1]) ==  m_width && m_path[1] < m_list.size() && m_path[1] < (m_list.size()- m_width) && !isProgressMade) {
-                if(isProgressMade == false) {
-                    beginMoveRows(QModelIndex(),m_path[1], m_path[1],QModelIndex(),m_path[1]+m_width);
-                    endMoveRows();
+            if ((m_path[0] - m_path[1]) ==  m_width && !isProgressMade) {
+                    beginMoveRows(QModelIndex(),m_path[0], m_path[0],QModelIndex(),m_path[1]);
                     qSwap(m_list[m_path[0]], m_list[m_path[1]]);
-                    beginMoveRows(QModelIndex(),m_path[0], m_path[0],QModelIndex(),m_path[0]-m_width);
+                    endMoveRows();
+                    beginMoveRows(QModelIndex(),m_path[1] + 1, m_path[1] + 1,QModelIndex(),m_path[0] + 1);
                     endMoveRows();
                     isProgressMade = true;
-                }
             }
         }
         m_path.clear();

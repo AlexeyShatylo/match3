@@ -51,7 +51,7 @@ ApplicationWindow {
                     width: dndGrid.cellWidth*0.8
                     height: dndGrid.cellHeight*0.8
                     source: dndGrid.model.getSource(tileType)
-                  //  opacity: index < (dndGrid.model.getHeight())*(dndGrid.model.getWidth()) ? 1:0
+                    opacity: index < (dndGrid.model.getHeight())*(dndGrid.model.getWidth()) ? 1:0
                     Text {
                         id: idTile
                         text: index  + "\n type:" +tileType
@@ -72,7 +72,7 @@ ApplicationWindow {
         }
         GridView{
             id: dndGrid
-            interactive: true
+            //interactive: true
             verticalLayoutDirection: GridView.BottomToTop
 
             anchors.fill: parent
