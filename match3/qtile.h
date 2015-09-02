@@ -10,10 +10,9 @@ class QTile : public QObject
 public:
     explicit QTile(QObject *parent = 0);
     QTile(int type, double opacity);
-
+    int getType() const;
     void setType(int type);
     void setTileOpacity(double opacity);
-    int getType() const;
     double getTileOpacity() const;
 private:
     int m_type;

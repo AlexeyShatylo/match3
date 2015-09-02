@@ -11,7 +11,7 @@
 *.dylib
 
 # Qt-es
-
+build-match3-Desktop_Qt_5_5_0_GCC_64bit-Debug
 /.qmake.cache
 /.qmake.stash
 *.pro.user

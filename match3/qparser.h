@@ -1,6 +1,5 @@
 #ifndef QPARSER_H
 #define QPARSER_H
-
 #include <QFile>
 #include <QByteArray>
 #include <QJsonDocument>
@@ -15,16 +14,13 @@ class Qparser: public QObject
 public:
     Qparser(QObject *parent = 0);
     ~Qparser();
-
     int getWidth()const;
     int getHeighth()const;
     int getMinScore()const;
-    QVector<int> getTypes()const;
     int getElementScore()const;
     int getMaxMoves()const;
-
+    QVector<int> getTypes()const;
     void fillFromFile();
-
 private:
     int m_width;
     int m_height;

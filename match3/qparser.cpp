@@ -1,10 +1,9 @@
 #include "qparser.h"
 
-Qparser::Qparser(QObject *parent):QObject(parent)
+Qparser::Qparser(QObject *parent): QObject(parent)
 {
     fillFromFile();
 }
-
 void Qparser::fillFromFile()
 {
         QFile file("inputData.json");
@@ -18,9 +17,7 @@ void Qparser::fillFromFile()
         m_minScore = json["minScore"].toInt();
         m_maxMoves = json["maxMoves"].toInt();
         QJsonArray q = json["types"].toArray();
-
-        for(int i = 0; i < q.size(); i++)
-        {
+        for(int i = 0; i < q.size(); i++) {
               m_types.append(q[i].toInt());
         }
 }

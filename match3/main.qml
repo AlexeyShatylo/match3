@@ -17,7 +17,7 @@ ApplicationWindow {
             MenuItem {
                 text: "New game"
                 shortcut: "Ctrl+N"
-
+                onTriggered: dndGrid.model.newGame()
             }
             MenuItem {
                 text: "Exit"
@@ -53,7 +53,12 @@ ApplicationWindow {
                     MouseArea {
                         id:rectMouse
                         anchors.fill: parent
-                        onPressed:{ dndGrid.model.doMovement(index) }
+                        onPressed:{
+                            dndGrid.model.doMovement(index);
+                            if(dndGrid.model.isMatched()){
+                                dndGrid.model.setSteps(1)
+                            }
+                        }
                         enabled: !myTran.running
                     }
                 }
@@ -73,9 +78,9 @@ ApplicationWindow {
             move: Transition {
                 id: myTran
                 SequentialAnimation {
-                    PauseAnimation {duration: ((myTran.ViewTransition.index+1 - myTran.ViewTransition.targetIndexes[0])) *30 }
-                    NumberAnimation { properties: "x,y"; duration: 100; easing.type: Easing.OutBounce }
-                    NumberAnimation { properties: "cellRect.opacity"; duration: 100; easing.type: Easing.OutBounce }
+                    PauseAnimation {duration: ((myTran.ViewTransition.index + 1 - myTran.ViewTransition.targetIndexes[0])) *50 }
+                    NumberAnimation { properties: "x,y"; duration: 500; easing.type: Easing.OutBounce }
+                    NumberAnimation { properties: "cellRect.opacity"; duration: 500; easing.type: Easing.OutBounce }
                 }
                 onRunningChanged:
                 {
