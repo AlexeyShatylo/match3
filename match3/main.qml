@@ -5,6 +5,7 @@ import QtQuick.Dialogs 1.2
 import QtQml.Models 2.1
 import QtQuick.Layouts 1.0
 import QtQuick 2.0
+import QtQuick 2.3
 ApplicationWindow {
     id:root
     visible: true
@@ -52,10 +53,8 @@ ApplicationWindow {
                     MouseArea {
                         id:rectMouse
                         anchors.fill: parent
-                        hoverEnabled: true;
-                        onPressed: {
-                            game(index);
-                        }
+                        onPressed:{ dndGrid.model.doMovement(index) }
+                        enabled: !myTran.running
                     }
                 }
             }
@@ -66,38 +65,32 @@ ApplicationWindow {
             anchors.fill: parent
             anchors.margins: 10
             interactive: false
-            cellWidth: (root.width/dndGrid.model.getWidth())-5
+            cellWidth: (root.width/dndGrid.model.getWidth()) - 5
             cellHeight: (root.height/dndGrid.model.getHeight())-5
+
             model:dataModel
             delegate: dndDelegate
             move: Transition {
-                id:myTran
-                onRunningChanged: {
-                    if (!myTran.running) {
-                    }
+                id: myTran
+                SequentialAnimation {
+                    PauseAnimation {duration: ((myTran.ViewTransition.index+1 - myTran.ViewTransition.targetIndexes[0])) *30 }
+                    NumberAnimation { properties: "x,y"; duration: 100; easing.type: Easing.OutBounce }
+                    NumberAnimation { properties: "cellRect.opacity"; duration: 100; easing.type: Easing.OutBounce }
                 }
-                ParallelAnimation {
-                    NumberAnimation {
-                        property: "x"
-                        duration: 2000;
-                    }
-                    NumberAnimation {
-                        property: "y"
-                        duration: 2000;
+                onRunningChanged:
+                {
+                    if(!myTran.running)
+                    {
+                        dndGrid.model.matching()
                     }
                 }
             }
-            moveDisplaced: myTran
+            displaced:  { myTran }
+            moveDisplaced: { myTran }
         }
     }
-    function game(index) {
 
-        var moved  = dndGrid.model.doMovement(index);
 
-        if(dndGrid.model.matching()) {
-            dndGrid.model.setSteps();
-        }
-    }
 }
 
 

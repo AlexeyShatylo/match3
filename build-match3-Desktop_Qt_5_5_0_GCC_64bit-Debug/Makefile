@@ -12,10 +12,10 @@ MAKEFILE      = Makefile
 
 CC            = gcc
 CXX           = g++
-DEFINES       = -DQT_QML_DEBUG -DQT_DECLARATIVE_DEBUG -DQT_QUICK_LIB -DQT_GUI_LIB -DQT_QML_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB
+DEFINES       = -DQT_QML_DEBUG -DQT_DECLARATIVE_DEBUG -DQT_QUICK_LIB -DQT_GUI_LIB -DQT_QML_LIB -DQT_NETWORK_LIB -DQT_TESTLIB_LIB -DQT_CORE_LIB -DQT_TESTCASE_BUILDDIR='"/home/oshatylo/My_test_pjcs/task_2/match3/build-match3-Desktop_Qt_5_5_0_GCC_64bit-Debug"'
 CFLAGS        = -pipe -g -Wall -W -D_REENTRANT -fPIC $(DEFINES)
-CXXFLAGS      = -pipe -g -Wall -W -D_REENTRANT -fPIC $(DEFINES)
-INCPATH       = -I../match3 -I. -I../../../../Qt5.5.0/5.5/gcc_64/include -I../../../../Qt5.5.0/5.5/gcc_64/include/QtQuick -I../../../../Qt5.5.0/5.5/gcc_64/include/QtGui -I../../../../Qt5.5.0/5.5/gcc_64/include/QtQml -I../../../../Qt5.5.0/5.5/gcc_64/include/QtNetwork -I../../../../Qt5.5.0/5.5/gcc_64/include/QtCore -I. -I../../../../Qt5.5.0/5.5/gcc_64/mkspecs/linux-g++
+CXXFLAGS      = -pipe -g -std=c++0x -Wall -W -D_REENTRANT -fPIC $(DEFINES)
+INCPATH       = -I../match3 -I. -I../../../../Qt5.5.0/5.5/gcc_64/include -I../../../../Qt5.5.0/5.5/gcc_64/include/QtQuick -I../../../../Qt5.5.0/5.5/gcc_64/include/QtGui -I../../../../Qt5.5.0/5.5/gcc_64/include/QtQml -I../../../../Qt5.5.0/5.5/gcc_64/include/QtNetwork -I../../../../Qt5.5.0/5.5/gcc_64/include/QtTest -I../../../../Qt5.5.0/5.5/gcc_64/include/QtCore -I. -I../../../../Qt5.5.0/5.5/gcc_64/mkspecs/linux-g++
 QMAKE         = /home/oshatylo/Qt5.5.0/5.5/gcc_64/bin/qmake
 DEL_FILE      = rm -f
 CHK_DIR_EXISTS= test -d
@@ -36,7 +36,7 @@ DISTNAME      = match31.0.0
 DISTDIR = /home/oshatylo/My_test_pjcs/task_2/match3/build-match3-Desktop_Qt_5_5_0_GCC_64bit-Debug/.tmp/match31.0.0
 LINK          = g++
 LFLAGS        = -Wl,-rpath,/home/oshatylo/Qt5.5.0/5.5/gcc_64 -Wl,-rpath,/home/oshatylo/Qt5.5.0/5.5/gcc_64/lib
-LIBS          = $(SUBLIBS) -L/home/oshatylo/Qt5.5.0/5.5/gcc_64/lib -lQt5Quick -L/usr/lib64 -lQt5Gui -lQt5Qml -lQt5Network -lQt5Core -lGL -lpthread 
+LIBS          = $(SUBLIBS) -L/home/oshatylo/Qt5.5.0/5.5/gcc_64/lib -lQt5Quick -L/usr/lib64 -lQt5Gui -lQt5Qml -lQt5Network -lQt5Test -lQt5Core -lGL -lpthread 
 AR            = ar cqs
 RANLIB        = 
 SED           = sed
@@ -181,12 +181,14 @@ DIST          = ../../../../Qt5.5.0/5.5/gcc_64/mkspecs/features/spec_pre.prf \
 		../match3/deployment.pri \
 		../../../../Qt5.5.0/5.5/gcc_64/mkspecs/features/resolve_config.prf \
 		../../../../Qt5.5.0/5.5/gcc_64/mkspecs/features/default_post.prf \
+		../../../../Qt5.5.0/5.5/gcc_64/mkspecs/features/c++11.prf \
 		../../../../Qt5.5.0/5.5/gcc_64/mkspecs/features/qml_debug.prf \
 		../../../../Qt5.5.0/5.5/gcc_64/mkspecs/features/declarative_debug.prf \
 		../../../../Qt5.5.0/5.5/gcc_64/mkspecs/features/warn_on.prf \
 		../../../../Qt5.5.0/5.5/gcc_64/mkspecs/features/qt.prf \
 		../../../../Qt5.5.0/5.5/gcc_64/mkspecs/features/resources.prf \
 		../../../../Qt5.5.0/5.5/gcc_64/mkspecs/features/moc.prf \
+		../../../../Qt5.5.0/5.5/gcc_64/mkspecs/features/testlib_defines.prf \
 		../../../../Qt5.5.0/5.5/gcc_64/mkspecs/features/unix/opengl.prf \
 		../../../../Qt5.5.0/5.5/gcc_64/mkspecs/features/unix/thread.prf \
 		../../../../Qt5.5.0/5.5/gcc_64/mkspecs/features/testcase_targets.prf \
@@ -349,12 +351,14 @@ Makefile: ../match3/match3.pro ../../../../Qt5.5.0/5.5/gcc_64/mkspecs/linux-g++/
 		../match3/deployment.pri \
 		../../../../Qt5.5.0/5.5/gcc_64/mkspecs/features/resolve_config.prf \
 		../../../../Qt5.5.0/5.5/gcc_64/mkspecs/features/default_post.prf \
+		../../../../Qt5.5.0/5.5/gcc_64/mkspecs/features/c++11.prf \
 		../../../../Qt5.5.0/5.5/gcc_64/mkspecs/features/qml_debug.prf \
 		../../../../Qt5.5.0/5.5/gcc_64/mkspecs/features/declarative_debug.prf \
 		../../../../Qt5.5.0/5.5/gcc_64/mkspecs/features/warn_on.prf \
 		../../../../Qt5.5.0/5.5/gcc_64/mkspecs/features/qt.prf \
 		../../../../Qt5.5.0/5.5/gcc_64/mkspecs/features/resources.prf \
 		../../../../Qt5.5.0/5.5/gcc_64/mkspecs/features/moc.prf \
+		../../../../Qt5.5.0/5.5/gcc_64/mkspecs/features/testlib_defines.prf \
 		../../../../Qt5.5.0/5.5/gcc_64/mkspecs/features/unix/opengl.prf \
 		../../../../Qt5.5.0/5.5/gcc_64/mkspecs/features/unix/thread.prf \
 		../../../../Qt5.5.0/5.5/gcc_64/mkspecs/features/testcase_targets.prf \
@@ -367,6 +371,7 @@ Makefile: ../match3/match3.pro ../../../../Qt5.5.0/5.5/gcc_64/mkspecs/linux-g++/
 		/home/oshatylo/Qt5.5.0/5.5/gcc_64/lib/libQt5Gui.prl \
 		/home/oshatylo/Qt5.5.0/5.5/gcc_64/lib/libQt5Qml.prl \
 		/home/oshatylo/Qt5.5.0/5.5/gcc_64/lib/libQt5Network.prl \
+		/home/oshatylo/Qt5.5.0/5.5/gcc_64/lib/libQt5Test.prl \
 		/home/oshatylo/Qt5.5.0/5.5/gcc_64/lib/libQt5Core.prl
 	$(QMAKE) -spec linux-g++ CONFIG+=debug CONFIG+=declarative_debug CONFIG+=qml_debug -o Makefile ../match3/match3.pro
 ../../../../Qt5.5.0/5.5/gcc_64/mkspecs/features/spec_pre.prf:
@@ -489,12 +494,14 @@ Makefile: ../match3/match3.pro ../../../../Qt5.5.0/5.5/gcc_64/mkspecs/linux-g++/
 ../match3/deployment.pri:
 ../../../../Qt5.5.0/5.5/gcc_64/mkspecs/features/resolve_config.prf:
 ../../../../Qt5.5.0/5.5/gcc_64/mkspecs/features/default_post.prf:
+../../../../Qt5.5.0/5.5/gcc_64/mkspecs/features/c++11.prf:
 ../../../../Qt5.5.0/5.5/gcc_64/mkspecs/features/qml_debug.prf:
 ../../../../Qt5.5.0/5.5/gcc_64/mkspecs/features/declarative_debug.prf:
 ../../../../Qt5.5.0/5.5/gcc_64/mkspecs/features/warn_on.prf:
 ../../../../Qt5.5.0/5.5/gcc_64/mkspecs/features/qt.prf:
 ../../../../Qt5.5.0/5.5/gcc_64/mkspecs/features/resources.prf:
 ../../../../Qt5.5.0/5.5/gcc_64/mkspecs/features/moc.prf:
+../../../../Qt5.5.0/5.5/gcc_64/mkspecs/features/testlib_defines.prf:
 ../../../../Qt5.5.0/5.5/gcc_64/mkspecs/features/unix/opengl.prf:
 ../../../../Qt5.5.0/5.5/gcc_64/mkspecs/features/unix/thread.prf:
 ../../../../Qt5.5.0/5.5/gcc_64/mkspecs/features/testcase_targets.prf:
@@ -507,6 +514,7 @@ Makefile: ../match3/match3.pro ../../../../Qt5.5.0/5.5/gcc_64/mkspecs/linux-g++/
 /home/oshatylo/Qt5.5.0/5.5/gcc_64/lib/libQt5Gui.prl:
 /home/oshatylo/Qt5.5.0/5.5/gcc_64/lib/libQt5Qml.prl:
 /home/oshatylo/Qt5.5.0/5.5/gcc_64/lib/libQt5Network.prl:
+/home/oshatylo/Qt5.5.0/5.5/gcc_64/lib/libQt5Test.prl:
 /home/oshatylo/Qt5.5.0/5.5/gcc_64/lib/libQt5Core.prl:
 qmake: FORCE
 	@$(QMAKE) -spec linux-g++ CONFIG+=debug CONFIG+=declarative_debug CONFIG+=qml_debug -o Makefile ../match3/match3.pro
@@ -614,7 +622,7 @@ moc_qtile.cpp: ../../../../Qt5.5.0/5.5/gcc_64/include/QtCore/QObject \
 		../../../../Qt5.5.0/5.5/gcc_64/include/QtCore/qisenum.h \
 		../../../../Qt5.5.0/5.5/gcc_64/include/QtCore/qobject_impl.h \
 		../match3/qtile.h
-	/home/oshatylo/Qt5.5.0/5.5/gcc_64/bin/moc $(DEFINES) -I/home/oshatylo/Qt5.5.0/5.5/gcc_64/mkspecs/linux-g++ -I/home/oshatylo/My_test_pjcs/task_2/match3/match3 -I/home/oshatylo/Qt5.5.0/5.5/gcc_64/include -I/home/oshatylo/Qt5.5.0/5.5/gcc_64/include/QtQuick -I/home/oshatylo/Qt5.5.0/5.5/gcc_64/include/QtGui -I/home/oshatylo/Qt5.5.0/5.5/gcc_64/include/QtQml -I/home/oshatylo/Qt5.5.0/5.5/gcc_64/include/QtNetwork -I/home/oshatylo/Qt5.5.0/5.5/gcc_64/include/QtCore -I. ../match3/qtile.h -o moc_qtile.cpp
+	/home/oshatylo/Qt5.5.0/5.5/gcc_64/bin/moc $(DEFINES) -I/home/oshatylo/Qt5.5.0/5.5/gcc_64/mkspecs/linux-g++ -I/home/oshatylo/My_test_pjcs/task_2/match3/match3 -I/home/oshatylo/Qt5.5.0/5.5/gcc_64/include -I/home/oshatylo/Qt5.5.0/5.5/gcc_64/include/QtQuick -I/home/oshatylo/Qt5.5.0/5.5/gcc_64/include/QtGui -I/home/oshatylo/Qt5.5.0/5.5/gcc_64/include/QtQml -I/home/oshatylo/Qt5.5.0/5.5/gcc_64/include/QtNetwork -I/home/oshatylo/Qt5.5.0/5.5/gcc_64/include/QtTest -I/home/oshatylo/Qt5.5.0/5.5/gcc_64/include/QtCore -I. ../match3/qtile.h -o moc_qtile.cpp
 
 moc_qmatchtreelist.cpp: ../../../../Qt5.5.0/5.5/gcc_64/include/QtCore/QObject \
 		../../../../Qt5.5.0/5.5/gcc_64/include/QtCore/qobject.h \
@@ -692,8 +700,12 @@ moc_qmatchtreelist.cpp: ../../../../Qt5.5.0/5.5/gcc_64/include/QtCore/QObject \
 		../../../../Qt5.5.0/5.5/gcc_64/include/QtCore/qjsondocument.h \
 		../../../../Qt5.5.0/5.5/gcc_64/include/QtCore/qjsonvalue.h \
 		../match3/qtile.h \
+		../../../../Qt5.5.0/5.5/gcc_64/include/QtCore/QTimer \
+		../../../../Qt5.5.0/5.5/gcc_64/include/QtCore/qtimer.h \
+		../../../../Qt5.5.0/5.5/gcc_64/include/QtCore/qbasictimer.h \
+		../../../../Qt5.5.0/5.5/gcc_64/include/QtCore/QDebug \
 		../match3/qmatchtreelist.h
-	/home/oshatylo/Qt5.5.0/5.5/gcc_64/bin/moc $(DEFINES) -I/home/oshatylo/Qt5.5.0/5.5/gcc_64/mkspecs/linux-g++ -I/home/oshatylo/My_test_pjcs/task_2/match3/match3 -I/home/oshatylo/Qt5.5.0/5.5/gcc_64/include -I/home/oshatylo/Qt5.5.0/5.5/gcc_64/include/QtQuick -I/home/oshatylo/Qt5.5.0/5.5/gcc_64/include/QtGui -I/home/oshatylo/Qt5.5.0/5.5/gcc_64/include/QtQml -I/home/oshatylo/Qt5.5.0/5.5/gcc_64/include/QtNetwork -I/home/oshatylo/Qt5.5.0/5.5/gcc_64/include/QtCore -I. ../match3/qmatchtreelist.h -o moc_qmatchtreelist.cpp
+	/home/oshatylo/Qt5.5.0/5.5/gcc_64/bin/moc $(DEFINES) -I/home/oshatylo/Qt5.5.0/5.5/gcc_64/mkspecs/linux-g++ -I/home/oshatylo/My_test_pjcs/task_2/match3/match3 -I/home/oshatylo/Qt5.5.0/5.5/gcc_64/include -I/home/oshatylo/Qt5.5.0/5.5/gcc_64/include/QtQuick -I/home/oshatylo/Qt5.5.0/5.5/gcc_64/include/QtGui -I/home/oshatylo/Qt5.5.0/5.5/gcc_64/include/QtQml -I/home/oshatylo/Qt5.5.0/5.5/gcc_64/include/QtNetwork -I/home/oshatylo/Qt5.5.0/5.5/gcc_64/include/QtTest -I/home/oshatylo/Qt5.5.0/5.5/gcc_64/include/QtCore -I. ../match3/qmatchtreelist.h -o moc_qmatchtreelist.cpp
 
 compiler_moc_source_make_all:
 compiler_moc_source_clean:
@@ -847,12 +859,15 @@ main.o: ../match3/main.cpp ../../../../Qt5.5.0/5.5/gcc_64/include/QtGui/QGuiAppl
 		../../../../Qt5.5.0/5.5/gcc_64/include/QtCore/QJsonDocument \
 		../../../../Qt5.5.0/5.5/gcc_64/include/QtCore/qjsondocument.h \
 		../../../../Qt5.5.0/5.5/gcc_64/include/QtCore/qjsonvalue.h \
+		../../../../Qt5.5.0/5.5/gcc_64/include/QtCore/QTimer \
+		../../../../Qt5.5.0/5.5/gcc_64/include/QtCore/qtimer.h \
+		../../../../Qt5.5.0/5.5/gcc_64/include/QtCore/qbasictimer.h \
+		../../../../Qt5.5.0/5.5/gcc_64/include/QtCore/QDebug \
 		../match3/qparser.h \
 		../../../../Qt5.5.0/5.5/gcc_64/include/QtCore/QFile \
 		../../../../Qt5.5.0/5.5/gcc_64/include/QtCore/QByteArray \
 		../../../../Qt5.5.0/5.5/gcc_64/include/QtCore/QJsonObject \
 		../../../../Qt5.5.0/5.5/gcc_64/include/QtCore/qjsonobject.h \
-		../../../../Qt5.5.0/5.5/gcc_64/include/QtCore/QDebug \
 		../../../../Qt5.5.0/5.5/gcc_64/include/QtCore/QJsonArray \
 		../../../../Qt5.5.0/5.5/gcc_64/include/QtCore/qjsonarray.h \
 		../../../../Qt5.5.0/5.5/gcc_64/include/QtQml/QQmlContext \
@@ -994,6 +1009,9 @@ qmatchtreelist.o: ../match3/qmatchtreelist.cpp ../match3/qmatchtreelist.h \
 		../../../../Qt5.5.0/5.5/gcc_64/include/QtCore/qjsondocument.h \
 		../../../../Qt5.5.0/5.5/gcc_64/include/QtCore/qjsonvalue.h \
 		../match3/qtile.h \
+		../../../../Qt5.5.0/5.5/gcc_64/include/QtCore/QTimer \
+		../../../../Qt5.5.0/5.5/gcc_64/include/QtCore/qtimer.h \
+		../../../../Qt5.5.0/5.5/gcc_64/include/QtCore/qbasictimer.h \
 		../../../../Qt5.5.0/5.5/gcc_64/include/QtCore/QDebug
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o qmatchtreelist.o ../match3/qmatchtreelist.cpp
 

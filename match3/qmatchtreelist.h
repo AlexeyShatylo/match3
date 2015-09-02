@@ -9,7 +9,8 @@
 #include <QJsonDocument>
 #include "qtile.h"
 #include <QTimer>
-#include <iostream>
+#include <QDebug>
+
 class QMatchTreeList : public QAbstractListModel
 {
     Q_OBJECT
@@ -30,19 +31,22 @@ public:
     Q_INVOKABLE bool matching();
     Q_INVOKABLE int getType(int index);
     Q_INVOKABLE int getScore()const;
+    Q_INVOKABLE int getSteps()const;
     int getRandomNumber(const int Min, const int Max);
-    int getSteps()const;
-    void remove();
     void fillRandomly();
-    bool create();
-    bool findMatchOnVertical();
-    bool findMatchOnHorizontal();
+    void remove();
     void fillMatches(int index);
     void deleteMatches();
-    void setScore(int machedTiles);
-    void setSteps();
-    bool doPath(int index);
     void fillSecondBoard();
+    void setScore(int machedTiles);
+    void setSteps(int successfulStep);
+
+    bool findMatchOnVertical();
+    bool findMatchOnHorizontal();
+    bool create();
+    bool doPath(int index);
+    Q_INVOKABLE bool isMatched();
+    Q_INVOKABLE bool backSwap();
 private:
     int m_minScore;
     int m_maxMoves;
@@ -51,14 +55,21 @@ private:
     int m_height;
     int m_totalScore;
     int m_leftSteps;
+    bool isProgressMade;
+    bool isGame;
     QTile* m_tile;
     QVector<QTile*> m_list;
     QVector<int> m_types;
     QVector<int> m_totalMatches;
     QVector<int> m_path;
+    QVector<int> m_backSwapPath;
+
 signals:
     void scoreChanged();
     void stepsChanged();
+    void smth();
 };
+
+
 
 #endif // QMATCHTREELIST_H

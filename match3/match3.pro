@@ -1,7 +1,7 @@
 TEMPLATE = app
 
 QT += qml quick
-
+QT += testlib
 SOURCES += main.cpp \
     qtile.cpp \
     qmatchtreelist.cpp \
@@ -14,7 +14,7 @@ QML_IMPORT_PATH =
 
 # Default rules for deployment.
 include(deployment.pri)
-
+CONFIG += c++11
 HEADERS += \
     qtile.h \
     qmatchtreelist.h \
