@@ -5,6 +5,7 @@ QMatchTreeList::QMatchTreeList(QObject *parent): QAbstractListModel(parent)
 
 }
 QMatchTreeList::QMatchTreeList(int minScore, int maxMoves, int height, int elementScore,int width, QVector<int> types, QObject *parent): QAbstractListModel(parent), m_types(types), m_minScore(minScore),m_maxMoves(maxMoves),m_elementScore(elementScore),m_width(width), m_height(height)
+
 {
     isGame = false;
     create();
@@ -168,6 +169,7 @@ bool QMatchTreeList::matching()
         if (isMatched()) {
             deleteMatches();
             matching();
+            fillSecondBoard();
             return true;
         }
         else {
@@ -390,10 +392,12 @@ void QMatchTreeList::newGame()
     fillRandomly();
     beginResetModel();
     matching();
-    m_path.clear();
-    m_totalScore = 0;
     setScore(0);
+    fillSecondBoard();
     endResetModel();
-    isGame = true;
     m_leftSteps = m_maxMoves;
+    isGame = true;
+    m_totalScore = 0;
+
+    m_path.clear();
 }

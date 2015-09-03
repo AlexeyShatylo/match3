@@ -90,8 +90,9 @@ ApplicationWindow {
                     }
                 }
             }
-            displaced:  { myTran }
-            moveDisplaced: { myTran }
+            displaced:  Transition{ NumberAnimation { properties: "y"; duration: 500; easing.type: Easing.OutBounce }}
+            moveDisplaced: { myTran}
+            addDisplaced: Transition{ NumberAnimation { properties: "y"; duration: 500; easing.type: Easing.OutBounce }}
         }
     }
 
