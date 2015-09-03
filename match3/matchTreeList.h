@@ -1,5 +1,5 @@
-#ifndef QMATCHTREELIST_H
-#define QMATCHTREELIST_H
+#ifndef MatchTreeList_H
+#define MatchTreeList_H
 #include <QObject>
 #include <QAbstractListModel>
 #include <QVariant>
@@ -7,19 +7,19 @@
 #include <QString>
 #include <QModelIndex>
 #include <QJsonDocument>
-#include "qtile.h"
+#include "boardTile.h"
 #include <QTimer>
 #include <QDebug>
 
-class QMatchTreeList : public QAbstractListModel
+class MatchTreeList : public QAbstractListModel
 {
     Q_OBJECT
     Q_PROPERTY(int score READ getScore WRITE setScore NOTIFY scoreChanged)
     Q_PROPERTY(int steps READ getSteps WRITE setSteps NOTIFY stepsChanged)
 public:
-    QMatchTreeList(QObject* parent = 0);
-    QMatchTreeList(int minScore, int maxMoves, int height, int elementScore, int width, QVector<int> types, QObject *parent = 0);
-    ~QMatchTreeList();
+    MatchTreeList(QObject* parent = 0);
+    MatchTreeList(int minScore, int maxMoves, int height, int elementScore, int width, QVector<int> types, QObject *parent = 0);
+    ~MatchTreeList();
     QVariant data(const QModelIndex &index, int role) const;
     Q_INVOKABLE int getWidth()const;
     Q_INVOKABLE int getHeight()const;
@@ -55,10 +55,10 @@ private:
     int m_height;
     int m_totalScore;
     int m_leftSteps;
-    bool isProgressMade;
-    bool isGame;
-    QTile* m_tile;
-    QVector<QTile*> m_list;
+    bool m_isProgressMade;
+    bool m_isGame;
+    boardTile* m_tile;
+    QVector<boardTile*> m_list;
     QVector<int> m_types;
     QVector<int> m_totalMatches;
     QVector<int> m_path;
@@ -74,4 +74,4 @@ public slots:
 
 
 
-#endif // QMATCHTREELIST_H
+#endif // MatchTreeList_H

@@ -17,7 +17,7 @@ ApplicationWindow {
             MenuItem {
                 text: "New game"
                 shortcut: "Ctrl+N"
-                onTriggered: dndGrid.model.newGame()
+                onTriggered: gameGrid.model.newGame()
             }
             MenuItem {
                 text: "Exit"
@@ -26,11 +26,11 @@ ApplicationWindow {
             }
         }
     }
-    statusBar: StatusBar{
-        RowLayout{
+    statusBar: StatusBar {
+        RowLayout {
             anchors.fill: parent
-            Label{text: "Score: "+dndGrid.model.score}
-            Label{text: "Turns left: "+ dndGrid.model.steps}
+            Label { text: "Score: "+gameGrid.model.score }
+            Label { text: "Turns left: "+ gameGrid.model.steps }
         }
     }
     Rectangle {
@@ -38,25 +38,26 @@ ApplicationWindow {
         anchors.fill: parent
         color: "lightgreen"
         Component {
-            id: dndDelegate
+            id: gameDelegate
             Item {
                 id: wrapper
-                width: dndGrid.cellWidth
-                height: dndGrid.cellHeight
+                width: gameGrid.cellWidth
+                height: gameGrid.cellHeight
                 Image {
                     id: cellRect
                     anchors.centerIn: parent
-                    width: dndGrid.cellWidth*0.8
-                    height: dndGrid.cellHeight*0.8
-                    source: dndGrid.model.getSource(tileType)
-                    opacity: index < (dndGrid.model.getHeight())*(dndGrid.model.getWidth()) ? 1:0
+                    Text { text: tileType}
+                    width: gameGrid.cellWidth*0.8
+                    height: gameGrid.cellHeight*0.8
+                    source: gameGrid.model.getSource(tileType)
+                    opacity: index < (gameGrid.model.getHeight())*(gameGrid.model.getWidth()) ? 1:0
                     MouseArea {
                         id:rectMouse
                         anchors.fill: parent
-                        onPressed:{
-                            dndGrid.model.doMovement(index);
-                            if(dndGrid.model.isMatched()){
-                                dndGrid.model.setSteps(1)
+                        onPressed: {
+                            gameGrid.model.doMovement(index);
+                            if(gameGrid.model.isMatched()) {
+                                gameGrid.model.setSteps(1)
                             }
                         }
                         enabled: !myTran.running
@@ -65,38 +66,33 @@ ApplicationWindow {
             }
         }
         GridView {
-            id: dndGrid
+            id: gameGrid
             verticalLayoutDirection: GridView.BottomToTop
             anchors.fill: parent
             anchors.margins: 10
             interactive: false
-            cellWidth: (root.width/dndGrid.model.getWidth()) - 5
-            cellHeight: (root.height/dndGrid.model.getHeight())-5
-
+            cellWidth: (root.width/gameGrid.model.getWidth()) - 5
+            cellHeight: (root.height/gameGrid.model.getHeight())-5
             model:dataModel
-            delegate: dndDelegate
+            delegate: gameDelegate
             move: Transition {
                 id: myTran
                 SequentialAnimation {
-                    PauseAnimation {duration: ((myTran.ViewTransition.index + 1 - myTran.ViewTransition.targetIndexes[0])) *50 }
-                    NumberAnimation { properties: "x,y"; duration: 500; easing.type: Easing.OutBounce }
+                    PauseAnimation {duration: (((myTran.ViewTransition.index + 1 - myTran.ViewTransition.targetIndexes[0])) * 50) }
+                    NumberAnimation { properties: "x,y"; duration: 1000; easing.type: Easing.OutBounce }
                     NumberAnimation { properties: "cellRect.opacity"; duration: 500; easing.type: Easing.OutBounce }
                 }
-                onRunningChanged:
-                {
-                    if(!myTran.running)
-                    {
-                        dndGrid.model.matching()
+                onRunningChanged: {
+                    if(!myTran.running) {
+                        gameGrid.model.matching()
                     }
                 }
             }
             displaced:  Transition{ NumberAnimation { properties: "y"; duration: 500; easing.type: Easing.OutBounce }}
-            moveDisplaced: { myTran}
-            addDisplaced: Transition{ NumberAnimation { properties: "y"; duration: 500; easing.type: Easing.OutBounce }}
+            moveDisplaced: {myTran}
+            add: {myTran}
         }
     }
-
-
 }
 
 

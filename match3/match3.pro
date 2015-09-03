@@ -3,9 +3,9 @@ TEMPLATE = app
 QT += qml quick
 QT += testlib
 SOURCES += main.cpp \
-    qtile.cpp \
-    qmatchtreelist.cpp \
-    qparser.cpp
+    matchTreeList.cpp \
+    inputDataParser.cpp \
+    boardTile.cpp
 
 RESOURCES += qml.qrc
 
@@ -16,6 +16,6 @@ QML_IMPORT_PATH =
 include(deployment.pri)
 CONFIG += c++11
 HEADERS += \
-    qtile.h \
-    qmatchtreelist.h \
-    qparser.h
+    matchTreeList.h \
+    inputDataParser.h \
+    boardTile.h

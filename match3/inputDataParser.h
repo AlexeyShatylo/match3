@@ -1,5 +1,5 @@
-#ifndef QPARSER_H
-#define QPARSER_H
+#ifndef inputDataParser_H
+#define inputDataParser_H
 #include <QFile>
 #include <QByteArray>
 #include <QJsonDocument>
@@ -9,11 +9,11 @@
 #include <QJsonArray>
 #include <QVector>
 #include <QObject>
-class Qparser: public QObject
+class inputDataParser: public QObject
 {
 public:
-    Qparser(QObject *parent = 0);
-    ~Qparser();
+    inputDataParser(QObject *parent = 0);
+    ~inputDataParser();
     int getWidth()const;
     int getHeighth()const;
     int getMinScore()const;
@@ -30,4 +30,4 @@ private:
     QVector<int> m_types;
 };
 
-#endif // QPARSER_H
+#endif // inputDataParser_H

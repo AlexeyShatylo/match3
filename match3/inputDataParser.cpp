@@ -1,10 +1,10 @@
-#include "qparser.h"
+#include "inputDataParser.h"
 
-Qparser::Qparser(QObject *parent): QObject(parent)
+inputDataParser::inputDataParser(QObject *parent): QObject(parent)
 {
     fillFromFile();
 }
-void Qparser::fillFromFile()
+void inputDataParser::fillFromFile()
 {
         QFile file("inputData.json");
         file.open(QIODevice::ReadOnly);
@@ -21,35 +21,35 @@ void Qparser::fillFromFile()
               m_types.append(q[i].toInt());
         }
 }
-int Qparser::getWidth() const
+int inputDataParser::getWidth() const
 {
     return m_width;
 }
-int Qparser::getHeighth() const
+int inputDataParser::getHeighth() const
 {
     return m_height;
 }
-int Qparser::getMinScore() const
+int inputDataParser::getMinScore() const
 {
     return m_minScore;
 }
 
-int Qparser::getElementScore() const
+int inputDataParser::getElementScore() const
 {
     return m_elementScore;
 }
 
-int Qparser::getMaxMoves() const
+int inputDataParser::getMaxMoves() const
 {
     return m_maxMoves;
 }
 
-QVector<int> Qparser::getTypes() const
+QVector<int> inputDataParser::getTypes() const
 {
     return m_types;
 }
 
-Qparser::~Qparser()
+inputDataParser::~inputDataParser()
 {
 
 }
