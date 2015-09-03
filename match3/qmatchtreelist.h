@@ -45,7 +45,7 @@ public:
     Q_INVOKABLE int getScore()const;
     Q_INVOKABLE int getSteps()const;
     Q_INVOKABLE void victory();
-//    Q_INVOKABLE void newGame();
+    Q_INVOKABLE void newGame();
     enum cellRoles{tileTypeRole = Qt::UserRole+1, tileOpacityRole = Qt::UserRole+2};
 private:
     int m_minScore;
