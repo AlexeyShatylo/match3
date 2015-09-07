@@ -29,8 +29,23 @@ ApplicationWindow {
     statusBar: StatusBar {
         RowLayout {
             anchors.fill: parent
-            Label { text: "Score: "+gameGrid.model.score }
-            Label { text: "Turns left: "+ gameGrid.model.steps }
+            Label { text: "Current score: " + gameGrid.model.score +"/" +   gameGrid.model.getMinScore() }
+            Label { text: "Turns left: " + gameGrid.model.performedSteps + "/" +gameGrid.model.getMaxMoves() }
+        }
+    }
+    Dialog {
+        visible: gameGrid.model.isVictory()
+        title: "Blue sky dialog"
+
+        contentItem: Rectangle {
+            color: "lightskyblue"
+            implicitWidth: 400
+            implicitHeight: 100
+            Text {
+                text: "Hello blue sky!"
+                color: "navy"
+                anchors.centerIn: parent
+            }
         }
     }
     Rectangle {
@@ -58,6 +73,7 @@ ApplicationWindow {
                             gameGrid.model.doMovement(index);
                             if(gameGrid.model.isMatched()) {
                                 gameGrid.model.setSteps(1)
+                                gameGrid.model.isVictory()
                             }
                         }
                         enabled: !myTran.running
